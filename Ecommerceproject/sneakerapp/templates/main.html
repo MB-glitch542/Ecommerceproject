@@ -1,0 +1,110 @@
+{% load static %}
+
+<!Doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SneakerStore</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1"/>
+
+    <script type="text/javascript">
+        var user = '{{ request.user }}'
+
+        function getCookie(name) {
+            var cookieValue = null;
+    // Check if document.cookie is not empty
+            if (document.cookie && document.cookie !== '') {
+        // Split the cookies into an array
+                var cookies = document.cookie.split(';');
+
+        // Loop through the cookies array
+                for (var i = 0; i < cookies.length; i++) {
+            // Trim whitespace and check if this cookie matches the name we're looking for
+                     var cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                // Extract the cookie value by removing the name and '='
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break; // Exit loop once we find the cookie
+            }
+        }
+    }
+    return cookieValue; // Return the found cookie value or null if not found
+
+        }
+        var csrftoken = getCookie('csrftoken')
+
+        function getCookie(name) {
+            var cookieArr = document.cookie.split(';');
+            for (var i = 0; i < cookieArr.length; i++) {
+        // Trim leading whitespace and check if this cookie matches the name we're looking for
+            var cookiePair = cookieArr[i].split('=');
+             if (name === cookiePair[0].trim()) {
+            // Extract and return the cookie value by removing the name and '='
+                 return decodeURIComponent(cookiePair[1]);
+        }
+    }
+
+    // Return null if the cookie is not found
+    return null;
+
+
+
+        }
+        var cart = JSON.parse(getCookie('cart'))
+        if (cart === undefined){
+            cart = {}
+            console.log('Cart are created')
+            document.cookie = 'cart=' + JSON.stringify(cart) +";domain;path/"
+        }
+        console.log('Carts:', cart)
+    </script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'store' %}">The Sneaker Vault</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
+      </li>
+
+
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+	     	<a href="#" class="btn btn-warning">Login</a>
+
+	     	<a href="{% url 'cart' %}">
+	    		<img id="cart-icon" src="{% static 'images/cart.png' %}">
+	    	</a>
+	    	<p id="cart-total">{{ cartItems }}</p>
+
+    </div>
+
+  </div>
+</nav>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+
+
+
+
+</body>
+</html>
